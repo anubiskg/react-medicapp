@@ -31,7 +31,8 @@ function RegistroForm() {
     setContrasena(event.target.value);
   }
 
-  const handleRegistro = async () => {
+  const handleRegistro = async (e) => {
+    e.preventDefault();
     const registroData = {
       nombre: nombre,
       apellido: apellido,
@@ -41,10 +42,15 @@ function RegistroForm() {
     }
 
     try {
-      const response = await axios.post('https://springgcp-medicapp.uc.r.appspot.com/api/persona/registro', registroData);
-      alert('Registro exitoso');
-      history.push('/');
-      window.location.reload(true);
+      //https://springgcp-medicapp.uc.r.appspot.com/api/persona/registro
+      const response = await axios.post(`https://springgcp-medicapp.uc.r.appspot.com/api/persona/registro`, registroData);
+      if (response.status === 200) {
+        alert('Registro exitoso');
+        history.push('/');
+        window.location.reload(true);
+      } else {
+        alert('No se pudo guardar el registro');
+      }
     } catch (error) {
       alert('Error al registrar, intenta de nuevo');
     }
@@ -75,7 +81,7 @@ function RegistroForm() {
             <input type="email" id="inputEmail" className="form-control mb-2 formInput" placeholder="Correo electrónico" value={correo} onChange={handleCorreoChange} required />
             <label htmlFor="inputPassword" className="sr-only formLabel">Contraseña</label>
             <input type="password" id="inputPassword" className="form-control mb-3 formInput" placeholder="Contraseña" value={contrasena} onChange={handleContrasenaChange} required />
-            <button type="submit" className="formButton">Registrarse</button>
+            <button type="submit" className="btn formButton">Registrarse</button>
             <br></br>
             <br></br>
             <div className="text-center mt-3">
